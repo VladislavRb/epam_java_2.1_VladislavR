@@ -1,4 +1,5 @@
 package main.java.com.company;
+import main.java.com.company.Point;
 
 public class Line {
     private Point startPoint, endPoint;
