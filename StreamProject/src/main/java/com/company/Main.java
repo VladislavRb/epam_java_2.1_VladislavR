@@ -16,7 +16,7 @@ public class Main {
         ParallelTaskDoer parallelTaskDoer = new ParallelTaskDoer(new ArrayList<Aircraft>(aircrafts));
 
         System.out.println("==============");
-        int capacityThreshold = 300;
+        int capacityThreshold = 200;
         try {
             Aircraft firstAircraftWithHigherCapacity = tasksDoer.getFirstAircraftWithCapacityOver(capacityThreshold);
             System.out.println("first found Aircraft with capacity over " + capacityThreshold + ": " +
