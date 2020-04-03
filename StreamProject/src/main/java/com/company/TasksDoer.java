@@ -3,6 +3,7 @@ package com.company;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TasksDoer {
@@ -12,32 +13,35 @@ public class TasksDoer {
         this.aircraftList = aircraftList;
     }
 
-    public boolean hasAircraftWithHigherCapacityThan(int capacity) {
+    public Aircraft getFirstAircraftWithCapacityOver(int capacity) throws Exception {
         return this.aircraftList.stream()
-                .anyMatch(aircraft -> aircraft.getCapacity() > capacity);
+                .filter(aircraft -> aircraft.getCapacity() > capacity)
+                .findAny()
+                .orElseThrow(() -> new Exception("No aircrafts with capactiy over " + capacity + " are found"));
     }
 
     public Aircraft getAircraftWithMinCapacity() {
-        return this.aircraftList.stream()
-                .min(Comparator.comparingInt(Aircraft::getCapacity)).get();
+        Optional<Aircraft> optionalAircraft = this.aircraftList.stream()
+                .min(Comparator.comparingInt(Aircraft::getCapacity));
+        return optionalAircraft.orElseGet(Aircraft::new);
     }
 
     public Aircraft getAircraftWithMaxCapacity() {
-        return this.aircraftList.stream()
-                .max(Comparator.comparingInt(Aircraft::getCapacity)).get();
+        Optional<Aircraft> optionalAircraft = this.aircraftList.stream()
+                .max(Comparator.comparingInt(Aircraft::getCapacity));
+        return optionalAircraft.isPresent() ? optionalAircraft.get() : new Aircraft();
     }
 
     public ArrayList<Aircraft> getAircraftsWithMultipleOwners() {
         return this.aircraftList.stream()
                 .filter(aircraft -> aircraft.getStores().size() > 1)
-                .peek(aircraft -> System.out.println(aircraft.getStores().size() + " is more than 1"))
+                .peek(aircraft -> System.out.println("peeked (consecutive stream) " + aircraft.getStores().size() + " owners"))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public ArrayList<Aircraft> getSortedAircraftsByPrice() {
         return this.aircraftList.stream()
                 .sorted(Comparator.comparingInt(Aircraft::getPrice))
-                .peek(aircraft -> System.out.println(aircraft.getPrice()))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -50,17 +54,18 @@ public class TasksDoer {
     public ArrayList<String> getAircraftNames() {
         return this.aircraftList.stream()
                 .map(Aircraft::getName)
-                .peek(name -> System.out.println("peekked name " + name))
+                .peek(name -> System.out.println("peeked name " + name))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public void printOwners() {
-        this.getAircraftNames().stream()
-                .forEach(System.out::println);
+    public void printAircrafts() {
+        this.aircraftList.stream()
+                .forEach(aircraft -> System.out.println(aircraft.getName()));
     }
 
-    public ArrayList<String> getOwnersNamesSet() {
-        return this.getAircraftNames().stream()
+    public ArrayList<String> getAircraftNamesSet() {
+        return this.aircraftList.stream()
+                .map(Aircraft::getName)
                 .distinct()
                 .collect(Collectors.toCollection(ArrayList::new));
     }

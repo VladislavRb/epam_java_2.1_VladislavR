@@ -3,6 +3,7 @@ package com.company;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Aircraft {
@@ -60,5 +61,15 @@ public class Aircraft {
                 ", price: " + this.price +
                 ", capacity: " + this.capacity +
                 ", owners: " + ownerNamesStr;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Aircraft aircraft = (Aircraft) o;
+        return price == aircraft.price &&
+                capacity == aircraft.capacity &&
+                Objects.equals(name, aircraft.name);
     }
 }
