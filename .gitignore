@@ -1,7 +1,6 @@
 # JavaProject
-WebProject/.idea/
-WebProject/lib/
-WebProject/out/
-WebProject/target/
-WebProject/*.iml
-WebProject/*.xml
+StreamProject/.idea/
+StreamProject/logs/
+StreamProject/target/
+StreamProject/*.iml
+StreamProject/*.xml
